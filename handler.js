@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.hello = (event, context, callback) => {
+module.exports.generateListing = (event, context, callback) => {
   const response = {
     statusCode: 200,
     body: JSON.stringify({
@@ -9,6 +9,7 @@ module.exports.hello = (event, context, callback) => {
     }),
   };
 
+  console.log("YOYO!");
   callback(null, response);
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration

@@ -13,6 +13,9 @@
 
 service: s3-directory-list
 
+plugins:
+  - serverless-external-s3-event
+
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
@@ -21,25 +24,42 @@ provider:
   name: aws
   runtime: nodejs6.10
 
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  stage: dev
+  region: eu-west-1
+  profile: serverless
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+
+  iamRoleStatements:
+   - Effect: "Allow"
+     Action:
+       - "s3:ListBucket"
+     Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+   - Effect: "Allow"
+     Action:
+       - "s3:PutObject"
+     Resource:
+       Fn::Join:
+         - ""
+         - - "arn:aws:s3:::"
+           - "Ref" : "ServerlessDeploymentBucket"
+           - "/*"
+   - Effect: "Allow"
+     Action:
+       - "s3:ListBucket"
+     Resource: "arn:aws:s3:::files.razorjack.net"
+   - Effect: "Allow"
+     Action:
+       - "s3:GetObject"
+       - "s3:PutObject"
+     Resource: "arn:aws:s3:::files.razorjack.net/*"
+
+   - Effect: "Allow"
+     Action:
+      - "s3:PutBucketNotification"
+     Resource:
+      Fn::Join:
+        - ""
+        - - "arn:aws:s3:::files.razorjack.net"
 
 # you can define service wide environment variables here
 #  environment:
@@ -55,8 +75,14 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  generateListing:
+    handler: handler.generateListing
+    events:
+      - existingS3:
+          bucket: files.razorjack.net
+          events:
+            - s3:ObjectCreated:*
+            - s3:ObjectRemoved:*
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
