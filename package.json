@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "serverless": "^1.18.1",
+    "serverless-external-s3-event": "^1.0.7"
+  }
+}
