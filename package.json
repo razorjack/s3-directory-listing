@@ -2,6 +2,8 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "pluralize": "^6.0.0",
+    "pretty-bytes": "^4.0.2",
     "serverless": "^1.18.1",
     "serverless-external-s3-event": "^1.0.7",
     "serverless-webpack": "^2.2.0"

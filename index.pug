@@ -25,7 +25,7 @@ html(lang='en')
           tfoot
             tr
               td(colspan='4')
-                small.text-muted 10 files, 10.00 MB total
+                small.text-muted= summary
           tbody
             each directory in directories
               tr
@@ -33,12 +33,11 @@ html(lang='en')
                   i.fa.fa-folder
                   a(href=directory)
                     strong= directory
-                td.text-right –
-                td.text-right –
+                td(colspan=2)
             each file in files
               tr
                 td.text-left
-                  i.fa.fa-picture-o
+                  i.fa(class=file.fileType)
                   a(href=file.fileName)= file.fileName
-                td.text-right= file.size
-                td.text-right= file.date
+                td.text-right= file.humanSize
+                td.text-right= file.humanDate

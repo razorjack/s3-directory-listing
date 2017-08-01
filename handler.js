@@ -5,6 +5,7 @@ const s3 = new S3({ apiVersion: '2006-03-01' });
 import template from './index.pug';
 import getDirectoryList from './lib/getDirectoryList';
 import getFileList from './lib/getFileList';
+import summarizeFileList from './lib/summarizeFileList';
 
 export const generateListing = function(event, context, callback) {
   const bucket = event.Records[0].s3.bucket.name;
@@ -22,10 +23,10 @@ export const generateListing = function(event, context, callback) {
   s3.listObjectsV2({ Bucket: bucket, Prefix: dirname + "/", Delimiter: "/" }, (err, data) => {
     if (err) { console.log(err); throw err; }
 
-    var html = template({
-      files: getFileList(data.Contents),
-      directories: getDirectoryList(data.CommonPrefixes)
-    });
+    let directories = getDirectoryList(data.CommonPrefixes);
+    let files = getFileList(data.Contents);
+    let summary = summarizeFileList(files);
+    var html = template({files, directories, summary});
     var params = {
       Body: html,
       Bucket: bucket,
