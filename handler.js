@@ -21,6 +21,7 @@ function processDirectoryInBucket(directory, bucket) {
     var params = {
       Body: html,
       Bucket: bucket,
+      ContentType: "text/html",
       Key: directory + "/index.html"
     };
     s3.putObject(params, function (err, data) {
