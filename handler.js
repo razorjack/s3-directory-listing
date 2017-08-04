@@ -6,6 +6,7 @@ import template from './index.pug';
 import getDirectoryList from './lib/getDirectoryList';
 import getFileList from './lib/getFileList';
 import summarizeFileList from './lib/summarizeFileList';
+import getBreadcrumbs from './lib/getBreadcrumbs';
 
 export const generateListing = function(event, context, callback) {
   const bucket = event.Records[0].s3.bucket.name;
@@ -26,7 +27,9 @@ export const generateListing = function(event, context, callback) {
     let directories = getDirectoryList(data.CommonPrefixes);
     let files = getFileList(data.Contents);
     let summary = summarizeFileList(files);
-    var html = template({files, directories, summary});
+    let breadcrumbs = getBreadcrumbs(dirname);
+    let pathToUp = breadcrumbs[breadcrumbs.length - 2] ? breadcrumbs[breadcrumbs.length - 2].path : false;
+    var html = template({files, directories, summary, breadcrumbs, pathToUp});
     var params = {
       Body: html,
       Bucket: bucket,

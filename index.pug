@@ -15,6 +15,16 @@ html(lang='en')
       i.fa { color: #337ab7; padding-right: 4px; }
   body
     .container
+
+      if breadcrumbs.length > 1
+        ol.breadcrumb
+          each item in breadcrumbs
+            if item.active
+              li.breadcrumb-item.active= item.name
+            else
+              li.breadcrumb-item
+                a(href=item.path)= item.name
+
       .table-responsive
         table#bs-table.table.table-hover
           thead
@@ -27,6 +37,13 @@ html(lang='en')
               td(colspan='4')
                 small.text-muted= summary
           tbody
+            if pathToUp
+              tr
+                td.text-left
+                  i.fa.fa-folder
+                  a(href=pathToUp)
+                    strong ..
+                td(colspan=2)
             each directory in directories
               tr
                 td.text-left

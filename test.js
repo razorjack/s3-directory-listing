@@ -6,6 +6,7 @@ import { files, directories } from './test/fixtures';
 import getDirectoryList from './lib/getDirectoryList';
 import getFileList from './lib/getFileList';
 import summarizeFileList from './lib/summarizeFileList';
+import getBreadcrumbs from './lib/getBreadcrumbs';
 
 describe('getDirectoryList', () => {
   it('returns directory list', () => {
@@ -39,5 +40,40 @@ describe('getFileList', () => {
 describe('summarize', () => {
   it('provides a file list summary', () => {
     expect(summarizeFileList(getFileList(files))).to.eql("2 files, 16.2 kB total");
+  });
+});
+
+
+describe('getBreadcrumbs', () => {
+  it('provides a list of breadcrumb items for path with one component', () => {
+    let expectedResults = [
+      {
+        active: true,
+        name: "test",
+        path: "/test"
+      },
+    ];
+    expect(getBreadcrumbs("test")).to.eql(expectedResults);
+  });
+
+  it('provides a list of breadcrumb items for path with multiple components', () => {
+    let expectedResults = [
+      {
+        active: false,
+        name: "test",
+        path: "/test"
+      },
+      {
+        active: false,
+        name: "quicksand-site",
+        path: "/test/quicksand-site"
+      },
+      {
+        active: true,
+        name: "source",
+        path: "/test/quicksand-site/source"
+      }
+    ];
+    expect(getBreadcrumbs("test/quicksand-site/source")).to.eql(expectedResults);
   });
 });
