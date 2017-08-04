@@ -1,7 +1,7 @@
 {
   "dependencies": {
+    "dateformat": "^2.0.0",
     "lodash": "^4.17.4",
-    "moment": "^2.18.1",
     "pluralize": "^6.0.0",
     "pretty-bytes": "^4.0.2",
     "serverless": "^1.18.1",
