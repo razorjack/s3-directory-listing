@@ -8,36 +8,46 @@ import getFileList from './lib/getFileList';
 import summarizeFileList from './lib/summarizeFileList';
 import getBreadcrumbs from './lib/getBreadcrumbs';
 
-export const generateListing = function(event, context, callback) {
-  const bucket = event.Records[0].s3.bucket.name;
-  const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-  const dirname = path.dirname(key);
-  const params = {
-    Bucket: bucket,
-    Key: key,
-  };
-
-  if (key.endsWith("/index.html")) {
-    console.log("index.html: skipping");
-    return;
-  }
-  s3.listObjectsV2({ Bucket: bucket, Prefix: dirname + "/", Delimiter: "/" }, (err, data) => {
+function processDirectoryInBucket(directory, bucket) {
+  s3.listObjectsV2({ Bucket: bucket, Prefix: directory + "/", Delimiter: "/" }, (err, data) => {
     if (err) { console.log(err); throw err; }
 
     let directories = getDirectoryList(data.CommonPrefixes);
     let files = getFileList(data.Contents);
     let summary = summarizeFileList(files);
-    let breadcrumbs = getBreadcrumbs(dirname);
+    let breadcrumbs = getBreadcrumbs(directory);
     let pathToUp = breadcrumbs[breadcrumbs.length - 2] ? breadcrumbs[breadcrumbs.length - 2].path : false;
     var html = template({files, directories, summary, breadcrumbs, pathToUp});
     var params = {
       Body: html,
       Bucket: bucket,
-      Key: dirname + "/index.html"
+      Key: directory + "/index.html"
     };
     s3.putObject(params, function (err, data) {
       if (err) { console.log(err, err.stack); }
       else { }
     });
   });
+}
+
+export const generateListing = function(event, context, callback) {
+  const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+  if (key.endsWith("/index.html")) {
+    console.log("index.html: skipping");
+    return;
+  }
+  const bucket = event.Records[0].s3.bucket.name;
+  const currentDirectory = path.dirname(key);
+  const parentDirectory = path.normalize(currentDirectory + "/..")
+
+  if (currentDirectory === ".") {
+    console.log("root directory: skipping")
+    return;
+  }
+
+  processDirectoryInBucket(currentDirectory, bucket);
+  if (parentDirectory !== ".") {
+    processDirectoryInBucket(parentDirectory, bucket);
+  }
+
 };
