@@ -24,6 +24,12 @@ function processDirectoryInBucket(directory, bucket) {
       ContentType: "text/html",
       Key: directory + "/index.html"
     };
+
+    if (files.length + directories.length === 0) {
+      console.log("empty directory: skipping");
+      return;
+    }
+
     s3.putObject(params, function (err, data) {
       if (err) { console.log(err, err.stack); }
       else { }
