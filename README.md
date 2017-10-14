@@ -20,7 +20,7 @@ Requirements: Node.js >= 6.10,  `yarn`.
 4. Log in to your AWS Management Console and create credentials with admin
    access (either by going to _[your profile] → My Security credentials_, or by
    creating a new user in IAM). This project doesn't need full control of your
-   AWS resources, but Serverless framework does. It's a known issue — I hope it
+   AWS resources, but Serverless framework does. It's a known issue – I hope it
    will be resolved soon by the framework generating the exact policy required
    to deploy the project.
 5. Install AWS CLI (eg. `brew install awscli`) and configure it with `aws
