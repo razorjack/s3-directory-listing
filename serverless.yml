@@ -22,7 +22,7 @@ plugins:
 # frameworkVersion: "=X.X.X"
 custom:
   bucketName: ${file(custom.yml):bucketName}
-  darkMode: ${file(custom.yml):darkMode, 'false'}
+  darkTheme: ${file(custom.yml):darkTheme, 'false'}
 
 provider:
   name: aws
@@ -82,6 +82,8 @@ provider:
 functions:
   generateListing:
     handler: handler.generateListing
+    environment:
+      darkTheme: ${self:custom.darkTheme}
     events:
       - existingS3:
           bucket: ${self:custom.bucketName}

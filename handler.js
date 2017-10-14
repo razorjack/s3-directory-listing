@@ -17,7 +17,8 @@ function processDirectoryInBucket(directory, bucket) {
     let summary = summarizeFileList(files);
     let breadcrumbs = getBreadcrumbs(directory);
     let pathToUp = breadcrumbs[breadcrumbs.length - 2] ? breadcrumbs[breadcrumbs.length - 2].path : false;
-    var html = template({files, directories, summary, breadcrumbs, pathToUp});
+    let darkTheme = process.env.darkTheme == "true";
+    var html = template({files, directories, summary, breadcrumbs, pathToUp, darkTheme});
     var params = {
       Body: html,
       Bucket: bucket,
