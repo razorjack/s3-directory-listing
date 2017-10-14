@@ -3,10 +3,10 @@ import 'babel-polyfill';
 import { expect } from 'chai';
 
 import { files, directories } from './fixtures';
-import getDirectoryList from '../lib/getDirectoryList';
-import getFileList from '../lib/getFileList';
-import summarizeFileList from '../lib/summarizeFileList';
-import getBreadcrumbs from '../lib/getBreadcrumbs';
+import getDirectoryList from '../src/lib/getDirectoryList';
+import getFileList from '../src/lib/getFileList';
+import summarizeFileList from '../src/lib/summarizeFileList';
+import getBreadcrumbs from '../src/lib/getBreadcrumbs';
 
 describe('getDirectoryList', () => {
   it('returns directory list', () => {

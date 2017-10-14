@@ -53,3 +53,7 @@ For _Path Pattern_ type `*/index.html` and select custom _Object Caching_ with
 the value `0` for Min TTL, max TTL and Default TTL. Now CloudFront will bypass
 the cache and will always fetch fresh `index.html` file directly from your S3
 bucket.
+
+## Running the tests
+
+`mocha --compilers js:babel-core/register test/test.js`
