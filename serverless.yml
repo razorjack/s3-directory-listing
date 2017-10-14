@@ -20,6 +20,9 @@ plugins:
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
+custom:
+  bucketName: ${file(custom.yml):bucketName}
+  darkMode: ${file(custom.yml):darkMode, 'false'}
 
 provider:
   name: aws
@@ -48,12 +51,12 @@ provider:
    - Effect: "Allow"
      Action:
        - "s3:ListBucket"
-     Resource: "arn:aws:s3:::files.razorjack.net"
+     Resource: "arn:aws:s3:::${self:custom.bucketName}"
    - Effect: "Allow"
      Action:
        - "s3:GetObject"
        - "s3:PutObject"
-     Resource: "arn:aws:s3:::files.razorjack.net/*"
+     Resource: "arn:aws:s3:::${self:custom.bucketName}/*"
 
    - Effect: "Allow"
      Action:
@@ -61,7 +64,7 @@ provider:
      Resource:
       Fn::Join:
         - ""
-        - - "arn:aws:s3:::files.razorjack.net"
+        - - "arn:aws:s3:::${self:custom.bucketName}"
 
 # you can define service wide environment variables here
 #  environment:
@@ -81,10 +84,15 @@ functions:
     handler: handler.generateListing
     events:
       - existingS3:
-          bucket: files.razorjack.net
+          bucket: ${self:custom.bucketName}
           events:
             - s3:ObjectCreated:*
             - s3:ObjectRemoved:*
+      # - s3:
+      #     bucket: ${self:custom.bucketName}
+      #     events:
+      #       - s3:ObjectCreated:*
+      #       - s3:ObjectRemoved:*
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -119,12 +127,12 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-#resources:
+# resources:
 #  Resources:
 #    NewResource:
 #      Type: AWS::S3::Bucket
 #      Properties:
-#        BucketName: my-new-bucket
+#        BucketName: ${self:custom.bucketName}
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
