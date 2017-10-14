@@ -1,5 +1,7 @@
+const path = require('path');
+
 module.exports = {
-  entry: './handler.js',
+  entry: './src/handler.js',
   target: 'node',
   module: {
     loaders: [
@@ -14,5 +16,10 @@ module.exports = {
         loaders: ['pug-loader'],
       },
     ]
-  }
+  },
+  output: {
+    libraryTarget: 'commonjs',
+    path: path.join(__dirname, '.webpack'),
+    filename: 'src/handler.js'
+  },
 };

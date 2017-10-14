@@ -81,7 +81,7 @@ provider:
 
 functions:
   generateListing:
-    handler: handler.generateListing
+    handler: src/handler.generateListing
     environment:
       darkTheme: ${self:custom.darkTheme}
     events:
