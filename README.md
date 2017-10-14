@@ -56,4 +56,6 @@ bucket.
 
 ## Running the tests
 
-`mocha --compilers js:babel-core/register test/test.js`
+```
+mocha --compilers js:babel-core/register test/test.js
+```
