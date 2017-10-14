@@ -10,7 +10,7 @@ Dark theme is also supported:
 
 <img src="docs/dark.png" width="714" height="290" alt="Dark mode">
 
-## Deployment
+## Installation
 
 Requirements: Node.js >= 6.10,  `yarn`.
 
