@@ -24,7 +24,7 @@ Requirements: Node.js >= 6.10,  `yarn`.
    will be resolved soon by the framework generating the exact policy required
    to deploy the project.
 5. Install AWS CLI (eg. `brew install awscli`) and configure it with `aws
-   configure`). This operation will create `~/.aws/credentials` file with
+   configure`. This operation will create `~/.aws/credentials` file with
    `default` profile. I recommend renaming it to something else so that your
    default profile doesn't have full admin access.
 6. `cp custom.yml.example custom.yml`. Edit `custom.yml` file and provide your
